@@ -1,0 +1,192 @@
+push word 5
+add [ebp-2],word 1
+pop word [5]
+ret
+
+
+
+sub
+pop word AX
+pop word BX
+sub word AX,BX
+push word AX
+
+
+add
+pop word AX
+pop word BX
+add word AX,BX
+push word AX
+
+
+mul
+BITS 32
+pop word AX
+pop word BX
+MUL  word BX
+push word AX
+
+
+div
+pop word AX
+pop word BX
+DIV word BX
+xor AH,AH
+push word AX
+
+
+
+store
+BITS 32
+XOR eax, eax
+Pop word AX
+Pop word BX
+mov byte AH, BL
+pop word [500 + EAX ]
+
+
+load
+BITS 32
+XOR eax, eax
+Pop word AX
+Pop word BX
+mov byte AH, BL
+push word [500 + EAX ]
+
+
+Call:
+BITS 32
+XOR eax, eax
+Pop word AX
+Pop word BX
+mov byte AH, BL
+mov AX,[500 + eax * 4]
+call AX 
+
+
+BITS 32
+XOR eax, eax
+Pop word AX
+Pop word BX
+CMP AX, 0xFF
+je test
+mov byte BH, AL
+mov AX,[500 + ebx * 4]
+call AX 
+jmp end
+test: 
+mov AX,[500 + ebx * 4]
+call AX
+end: nop
+
+
+
+
+
+
+Jmp
+BITS 32
+XOR eax, eax
+Pop word AX
+Pop word BX
+mov byte AH, BL
+mov eax,[500 + eax * 4]
+jmp eax 
+
+
+cmp
+BITS 32
+Pop word AX
+Pop word BX
+CMP AX, BX
+
+
+INC
+BITS 32
+INC word [ebp]
+
+small jump
+BITS 32
+XOR eax, eax
+Pop word AX
+Pop word BX
+mov byte AH, BL
+mov eax,[500 + eax * 4]
+jmp eax 
+
+IntCall
+BITS 32
+XOR eax, eax
+Pop word AX
+mov EAX,[500 + eax * 4]
+call EAX 
+
+Syscalls:
+printstring:
+BITS 32
+cld     
+Xor EAX,EAX
+pop word CX
+Pop word AX
+Pop word BX
+mov byte AH, BL
+lea SI ,[500 + EAX]
+mov DI ,[0xAAA]
+REP MOVSB
+mov [0xAAA] ,DI
+ret
+
+
+
+
+
+
+
+
+
+
+.Heap
+.Segment "Main"
+[0:1]push 10
+
+[0:2]push 1 	; store x
+[0:3]push 0
+[0:4]store
+[0:5]push 1 	;load x
+[0:6]push 0
+[0:7]load
+[0:8]push 1
+[0:9]Cmp  	;compare x and 1
+[0:a]push 1 
+[0:b]push 0
+[0:c]Jeq 	;if x==1 go to the emd
+[0:d]push 1 	;load x again
+[0:e]push 0
+[0:f]load 
+[0:10]push 1 	;load x even more
+[0:11]push 0
+[0:12]load
+[0:13]push 1 	; subtract 1 from x
+[0:14]sub
+[0:15]push 0
+[0:16]push y
+[0:17]call 	;call fib(x-1)
+[0:18]push 1
+[0:19]push 1
+[0:1a]store 	; storving value of fib(x-1) so x is on top
+[0:1b]push 2
+[0:1c]sub
+[0:1d]push 0
+[0:1e]push y
+[0:1f]call 	; fib(x-2)
+[0:20]push 1 
+[0:21]push 1
+[0:22]load 	; loading fib(x-1)
+[0:23]add
+[0:24]ret
+.Segment "Data"
+[1:0] 0x00 ; im x
+[1:1] 0x00 ; im fib(x-1)
+
+
+//segment index

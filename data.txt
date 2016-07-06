@@ -1,0 +1,90 @@
+number  in1 in2 out  flags  INSTRUCTION
+0
+1        *              8     68//push immideate word      push https://pdos.csail.mit.edu/6.828/2012/readings/i386/PUSH.htm
+2                 *     0          pop http://x86.renejeschke.de/html/file_module_x86_id_248.html
+3                                   load
+4                                   store
+5        *   *    *     7     01    add http://x86.renejeschke.de/html/file_module_x86_id_5.html
+6        *   *    *     7           sub http://x86.renejeschke.de/html/file_module_x86_id_308.html
+7        *   *    *     7           mul http://x86.renejeschke.de/html/file_module_x86_id_210.html
+8        *   *    *     7           div http://x86.renejeschke.de/html/file_module_x86_id_72.html
+9        *   *                      call http://x86.renejeschke.de/html/file_module_x86_id_26.html
+a                       0           ret http://x86.renejeschke.de/html/file_module_x86_id_280.html
+b        *   *          3           jmp http://x86.renejeschke.de/html/file_module_x86_id_147.html
+c        *   *          7           cmp http://x86.renejeschke.de/html/file_module_x86_id_35.html
+d        *   *          3           Jeq
+e        *   *          3           Jne
+f        *   *          3           Jgt
+10       *   *          3           Jlt
+11       *   *          3           Jle
+12       *   *          3           Jge
+13                      0           Exit
+
+
+        *   *          3    print byte use http://faydoc.tripod.com/cpu/movsb.htm
+                       0     exit(use ret)http://x86.renejeschke.de/html/file_module_x86_id_280.html
+        *              1     call http://x86.renejeschke.de/html/file_module_x86_id_26.html
+                       0     ret http://x86.renejeschke.de/html/file_module_x86_id_280.html
+
+
+
+
+format
+
+
+
+    int id = 0;
+    char instruction = instructions[id];
+
+    char in1 = instruction && 0x100;
+    char in2 = instruction && 0x200;
+    char data = instruction && 0x800;
+
+    if(out && in1){
+    //use register
+    }else if(out && !in1){
+    //put back on stack
+    }else if(in1){
+    //load from stack
+    }
+    if(in2){
+    //load from stack
+    }
+
+ out = instruction && 0x400;
+
+
+
+char instruction = instructions[id];
+int register
+bool in1 = instruction && 0x100;
+bool in2 = instruction && 0x200;
+if(out && in1){
+//use register
+}else if(out && !in1){
+//put back on stack
+}else if(in1){
+//load from stack
+}
+if(in2){
+//load from stack
+}
+heap[indexpointer]= instruction && 0xFF;
+bool out = instruction && 0x400;
+
+
+
+
+
+
+
+-m32
+
+
+
+
+//to peak at stack
+mov eax, [esp]    ; Top of stack
+mov ebx, [esp+4]  ; Second element on the stack
+
+use CMP for jumps
